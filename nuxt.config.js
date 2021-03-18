@@ -27,6 +27,9 @@ export default {
     },
     {
       src: '@/plugins/vue-awesome-swiper', ssr: false
+    },
+    {
+      src: '@/plugins/axios'
     }
   ],
 
@@ -35,7 +38,12 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    '@nuxtjs/moment'
   ],
+  moment: {
+    defaultLocale: 'ru',
+    locales: ['ru']
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -44,7 +52,8 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
