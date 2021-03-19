@@ -1,7 +1,13 @@
 <template>
   <swiper :options="swiperOptions">
-    <swiper-slide>
-
+    <swiper-slide class="first-slide">
+      <div class="first-slide__icons">
+        <img src="@/assets/images/telegram-icon.svg" alt="telegram icon">
+        <img src="@/assets/images/instagram-icon.svg" alt="instagram icon">
+      </div>
+      <div class="first-slide__text">
+        <h5>Узнавайте последние новости первыми — подпишитесь в Инстаграме и Телеграме</h5>
+      </div>
     </swiper-slide>
     <swiper-slide v-for="(news, key) in newsList" :key="key">
       <div class="uk-card">
@@ -69,6 +75,24 @@ export default {
     .swiper-slide {
       width: 17.25rem;
       height: auto;
+      margin: 1rem 0;
+      &.first-slide {
+        background-color: #EDF3F9;
+        border-radius: 20px;
+        padding: 3.5rem 2rem 0;
+        .first-slide__icons {
+          margin-bottom: 1rem;
+        }
+        .first-slide__text {
+          h5 {
+            font-size: 1.25rem;
+            line-height: 1.5rem;
+            letter-spacing: 0.038rem;
+            color: #001A34;
+            font-family: 'GTEestiProDisplay-Regular', sans-serif;
+          }
+        }
+      }
       .uk-card {
         border-radius: 1.25rem;
         overflow: hidden;
@@ -87,6 +111,7 @@ export default {
             background-color: #000912;
             border-radius: 1000px;
             text-transform: lowercase;
+            font-family: 'GTEestiProDisplay-Regular', sans-serif;
           }
         }
         .uk-card-body {

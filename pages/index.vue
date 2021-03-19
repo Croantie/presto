@@ -91,7 +91,7 @@
           <h2 class="section-header">Разбираемся</h2>
           <p class="section-info">Узнайте, с чего начать из серии коротких обучающих роликов. <br> Познакомьтесь с Личным кабинетом и инструментами для работы на маркетплейсе.
             <br> Настройте аналитику и научитесь запускать эффективные рекламные кампании.</p>
-          <div class="understanding__content-navigation uk-flex uk-flex-between uk-flex-middle">
+          <div class="understanding__content-navigation__news uk-flex uk-flex-between uk-flex-middle">
             <h4 class="section-small-header">Новости маркетплейса</h4>
             <div class="navigation-block uk-flex">
               <a href="/news" class="page-link">Все новости</a>
@@ -101,6 +101,16 @@
         </div>
       </div>
       <news-carousel />
+      <div class="container">
+        <div class="understanding__content-navigation__articles uk-flex uk-flex-between uk-flex-middle">
+          <h4 class="section-small-header">Статьи</h4>
+          <div class="navigation-block uk-flex">
+            <a href="/articles" class="page-link">Все статьи</a>
+            <navigation-buttons :nextSlide="'articles-carousel-next'" :prevSlide="'articles-carousel-prev'" />
+          </div>
+        </div>
+      </div>
+      <articles-carousel />
     </section>
   </div>
 </template>
@@ -112,6 +122,7 @@ import AboutCarousel from "@/components/AboutCarousel";
 import NavigationButtons from "@/components/NavigationButtons";
 import EventsCarousel from "@/components/EventsCarousel";
 import NewsCarousel from "@/components/NewsCarousel";
+import ArticlesCarousel from "@/components/ArticlesCarousel";
 
 export default {
   components: {
@@ -120,7 +131,8 @@ export default {
     AboutCarousel,
     NavigationButtons,
     EventsCarousel,
-    NewsCarousel
+    NewsCarousel,
+    ArticlesCarousel
   },
   data() {
     return {
@@ -278,7 +290,7 @@ export default {
       .section-header {
         margin-bottom: 1.5rem;
       }
-      &-navigation {
+      &-navigation__news, &-navigation__articles {
         padding: 3.75rem 0 1.25rem;
       }
     }
