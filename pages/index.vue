@@ -112,6 +112,13 @@
       </div>
       <articles-carousel />
     </section>
+    <section id="big-data">
+      <div class="container">
+        <div class="big-data__content">
+
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -293,6 +300,18 @@ export default {
       &-navigation__news, &-navigation__articles {
         padding: 3.75rem 0 1.25rem;
       }
+    }
+  }
+  #big-data {
+    padding: 20px 0;
+    .big-data__content {
+      height: 10.5rem;
+      width: 100%;
+      background-image: url('@/assets/images/big-data-bg.jpeg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+      border-radius: 20px;
     }
   }
 </style>
