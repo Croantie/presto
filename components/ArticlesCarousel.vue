@@ -1,59 +1,73 @@
 <template>
-  <swiper :options="swiperOptions">
-    <swiper-slide v-for="(article, key) in articles" :key="key">
-      <div class="slide__top-block uk-flex uk-flex-between uk-flex-middle">
-        <div class="date-text">Дата публикации</div>
-        <div class="uk-label">{{ $moment(article.date).format('D MMMM') }}</div>
-      </div>
-      <div class="slide__content">
-        <div class="slide__content-text">
-          <div class="slide__content-text__header">
-            <h5>{{ article.title }}</h5>
-          </div>
-          <div class="slide__content-text__description">
-            <p>{{ article.excerpt }}</p>
-          </div>
-          <div class="slide__content-text__link uk-position-bottom">
-            <a :href="`/articles/${article.slug}`">Читать статью</a>
+  <div>
+    <spinner v-if="loading" />
+    <swiper v-else :options="swiperOptions">
+      <swiper-slide v-for="(article, key) in articles" :key="key">
+        <div class="slide__top-block uk-flex uk-flex-between uk-flex-middle">
+          <div class="date-text">Дата публикации</div>
+          <div class="uk-label">{{ $moment(article.date).format('D MMMM') }}</div>
+        </div>
+        <div class="slide__content">
+          <div class="slide__content-text">
+            <div class="slide__content-text__header">
+              <h5>{{ article.title }}</h5>
+            </div>
+            <div class="slide__content-text__description">
+              <p>{{ article.excerpt }}</p>
+            </div>
+            <div class="slide__content-text__link uk-position-bottom">
+              <a :href="`/articles/${article.slug}`">Читать статью</a>
+            </div>
           </div>
         </div>
-      </div>
-    </swiper-slide>
-  </swiper>
+      </swiper-slide>
+    </swiper>
+  </div>
 </template>
 
 <script>
 import {Swiper, SwiperSlide} from "vue-awesome-swiper";
+import Spinner from "@/components/Spinner";
 
 export default {
   name: "ArticlesCarousel",
   components: {
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+    Spinner
   },
   data() {
     return {
+      loading: false,
       articles: [],
       swiperOptions: {
-        slidesPerView: 2,
-        slidesPerColumn: 2,
+        slidesPerView: 'auto',
+        slidesPerColumn: 1,
         spaceBetween: 24,
         navigation: {
           nextEl: '.articles-carousel-next',
           prevEl: '.articles-carousel-prev'
+        },
+        breakpoints: {
+          650: {
+            slidesPerView: 2,
+            slidesPerColumn: 2
+          }
         }
       }
     }
   },
   methods: {
     async getArticles() {
+      this.loading = true;
       await this.$prestoApi.get('/articles')
         .then(res => {
           this.articles = res.data
-          console.log(res.data)
+          this.loading = false
         })
         .catch(err => {
           console.log(err)
+          this.loading = false
         })
     }
   },
@@ -133,6 +147,17 @@ export default {
       }
 
     }
+  }
+}
+@media screen and (max-width: 1199px) {
+  .swiper-container {
+    padding-left: 1.75rem;
+  }
+}
+@media screen and (max-width: 649px) {
+  .swiper-container {
+    padding-left: 1rem;
+    height: 23rem;
   }
 }
 </style>

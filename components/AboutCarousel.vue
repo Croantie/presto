@@ -95,4 +95,34 @@ export default {
       }
     }
   }
+  @media screen and (max-width: 1199px) {
+    .swiper-container {
+      padding-left: 1.75rem;
+    }
+  }
+  @media screen and (max-width: 649px) {
+    .swiper-container {
+      padding-left: 1rem;
+      min-height: 12.875rem;
+      .swiper-slide {
+        width: 7.5rem;
+        height: 9.375rem;
+        padding: 1.5rem 1rem;
+        border-radius: 1rem;
+        h3 {
+          font-size: 1.25rem;
+          line-height: 1.5rem;
+          letter-spacing: .6px;
+        }
+        p {
+          font-size: 14px;
+          line-height: 16px;
+          letter-spacing: .4px;
+        }
+        &:hover {
+          box-shadow: 0 0 1.9rem 0 rgba(0,0,0,0.1);
+        }
+      }
+    }
+  }
 </style>

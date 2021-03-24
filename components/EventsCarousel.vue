@@ -1,40 +1,46 @@
 <template>
-  <swiper :options="swiperOptions">
-    <swiper-slide v-for="(event, key) in events" :key="key">
-      <div class="slide__top-block uk-flex uk-flex-between uk-flex-middle">
-        <div class="date">{{ $moment(event.date).format('D MMMM, hh:mm') }}</div>
-        <div class="badge" :class="{'blue-bg': event.level === 'Для новичков'}">{{ event.level }}</div>
-      </div>
-      <div class="slide__content">
-        <h3>{{ event.title }}</h3>
-        <h5>Расскажем про</h5>
-        <div class="slide__content-point">
-          <ul class="uk-list">
-            <li v-for="(point, key) in event.points" :key="key" class="uk-flex uk-flex-top">
-              <img src="@/assets/images/check-icon.svg" alt="check-icon">
-              <p>{{ point }}</p>
-            </li>
-          </ul>
+  <div>
+    <spinner v-if="loading" />
+    <swiper v-else :options="swiperOptions">
+      <swiper-slide v-for="(event, key) in events" :key="key">
+        <div class="slide__top-block uk-flex uk-flex-between uk-flex-middle">
+          <div class="date">{{ $moment(event.date).format('D MMMM, hh:mm') }}</div>
+          <div class="badge" :class="{'blue-bg': event.level === 'Для новичков'}">{{ event.level }}</div>
         </div>
-        <div class="slide__content-link uk-position-bottom">
-          <a :href="`events/${event.slug}`">Подробнее</a>
+        <div class="slide__content">
+          <h3>{{ event.title }}</h3>
+          <h5>Расскажем про</h5>
+          <div class="slide__content-point">
+            <ul class="uk-list">
+              <li v-for="(point, key) in event.points" :key="key" class="uk-flex uk-flex-top">
+                <img src="@/assets/images/check-icon.svg" alt="check-icon">
+                <p>{{ point }}</p>
+              </li>
+            </ul>
+          </div>
+          <div class="slide__content-link uk-position-bottom">
+            <a :href="`events/${event.slug}`">Подробнее</a>
+          </div>
         </div>
-      </div>
-    </swiper-slide>
-  </swiper>
+      </swiper-slide>
+    </swiper>
+  </div>
 </template>
 
 <script>
 import {Swiper, SwiperSlide} from "vue-awesome-swiper";
+import Spinner from "@/components/Spinner";
 
 export default {
   name: "EventsCarousel",
   components: {
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+    Spinner
   },
   data() {
     return {
+      loading: false,
       events: [],
       swiperOptions: {
         slidesPerView: 'auto',
@@ -48,12 +54,15 @@ export default {
   },
   methods: {
     async getEvents() {
+      this.loading = true
       await this.$prestoApi.get('/events')
         .then(res => {
           this.events = res.data
+          this.loading = false
         })
         .catch(err => {
           console.log(err)
+          this.loading = false
         })
     }
   },
@@ -141,6 +150,52 @@ export default {
             line-height: 1.25rem;
             letter-spacing: .025rem;
             font-family: 'GTEestiProText-Light', sans-serif;
+          }
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 1199px) {
+    .swiper-container {
+      padding-left: 1.75rem;
+    }
+  }
+  @media screen and (max-width: 649px) {
+    .swiper-container {
+      padding-left: 1rem;
+      .swiper-slide {
+        padding: 1rem 0 1rem 1rem;
+        width: 16.25rem;
+        .slide__top-block {
+          .badge {
+            font-size: .75rem;
+            line-height: 16px;
+            letter-spacing: .4px;
+            padding: 8px 8px 8px 12px;
+          }
+          .date {
+            font-size: 12px;
+            line-height: 16px;
+            letter-spacing: .4px;
+          }
+        }
+        .slide__content {
+          padding-right: 1rem;
+          h3 {
+            font-size: 20px;
+            line-height: 24px;
+            letter-spacing: .6px;
+            margin: 1rem 0;
+          }
+          h5 {
+            margin: 1rem 0;
+            font-size: 14px;
+            line-height: 16px;
+            letter-spacing: .6px;
+          }
+          .uk-position-bottom {
+            left: 1rem;
+            bottom: 1rem;
           }
         }
       }

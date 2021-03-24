@@ -28,4 +28,9 @@ export default {
     opacity: .5;
     cursor: auto;
   }
+  @media screen and (max-width: 649px) {
+    .uk-flex {
+      display: none;
+    }
+  }
 </style>

@@ -1,42 +1,52 @@
 <template>
-  <swiper :options="swiperOptions">
-    <swiper-slide class="first-slide">
-      <div class="first-slide__icons">
-        <img src="@/assets/images/telegram-icon.svg" alt="telegram icon">
-        <img src="@/assets/images/instagram-icon.svg" alt="instagram icon">
-      </div>
-      <div class="first-slide__text">
-        <h5>Узнавайте последние новости первыми — подпишитесь в Инстаграме и Телеграме</h5>
-      </div>
-    </swiper-slide>
-    <swiper-slide v-for="(news, key) in newsList" :key="key">
-      <div class="uk-card">
-        <div class="uk-card-media-top">
-          <div class="uk-card-badge uk-label">
-            {{ $moment(news.date).format('D MMMM') }}
+  <div>
+    <spinner v-if="loading" />
+    <swiper v-else :options="swiperOptions">
+      <swiper-slide class="first-slide">
+        <div class="first-slide__icons">
+          <a href="https://web.telegram.org/" target="_blank">
+            <img src="@/assets/images/telegram-icon.svg" alt="telegram icon">
+          </a>
+          <a href="https://www.instagram.com/" target="_blank">
+            <img src="@/assets/images/instagram-icon.svg" alt="instagram icon">
+          </a>
+        </div>
+        <div class="first-slide__text">
+          <h5>Узнавайте последние новости первыми — подпишитесь в Инстаграме и Телеграме</h5>
+        </div>
+      </swiper-slide>
+      <swiper-slide v-for="(news, key) in newsList" :key="key">
+        <div class="uk-card">
+          <div class="uk-card-media-top">
+            <div class="uk-card-badge uk-label">
+              {{ $moment(news.date).format('D MMMM') }}
+            </div>
+            <img :src="news.image.url" :alt="news.image.alternativeText">
           </div>
-          <img :src="news.image.url" :alt="news.image.alternativeText">
+          <div class="uk-card-body">
+            <h5>{{ news.title }}</h5>
+            <a :href="`news/${news.slug}`" class="uk-position-bottom">Подробнее</a>
+          </div>
         </div>
-        <div class="uk-card-body">
-          <h5>{{ news.title }}</h5>
-          <a :href="`news/${news.slug}`" class="uk-position-bottom">Подробнее</a>
-        </div>
-      </div>
-    </swiper-slide>
-  </swiper>
+      </swiper-slide>
+    </swiper>
+  </div>
 </template>
 
 <script>
 import {Swiper, SwiperSlide} from "vue-awesome-swiper";
+import Spinner from "@/components/Spinner";
 
 export default {
   name: "NewsCarousel",
   components: {
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+    Spinner
   },
   data() {
     return {
+      loading: false,
       newsList: [],
       swiperOptions: {
         slidesPerView: 'auto',
@@ -50,13 +60,15 @@ export default {
   },
   methods: {
     async getNews() {
+      this.loading = true
       await this.$prestoApi.get('/news')
         .then(res => {
           this.newsList = res.data
-          console.log(res.data)
+          this.loading = false
         })
         .catch(err => {
           console.log(err)
+          this.loading = false
         })
     }
   },
@@ -133,6 +145,34 @@ export default {
           .uk-position-bottom {
             left: 1.5rem;
             bottom: 2.125rem;
+            color: #005BFF;
+            text-decoration: none;
+            font-family: 'GTEestiProText-Light', sans-serif;
+            line-height: 20px;
+            letter-spacing: .4px;
+          }
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 1199px) {
+    .swiper-container {
+      padding-left: 1.75rem;
+    }
+  }
+  @media screen and (max-width: 649px) {
+    .swiper-container {
+      padding-left: 1rem;
+      .swiper-slide {
+        width: 13.75rem;
+        &.first-slide {
+          padding: 3.5rem 20px 0;
+          .first-slide__text {
+            h5 {
+              font-size: 18px;
+              line-height: 24px;
+              letter-spacing: .6px;
+            }
           }
         }
       }
